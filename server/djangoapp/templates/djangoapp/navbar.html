@@ -1,0 +1,15 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item {% if navbar == 'home' %}active{% endif %}">
+                <a class="nav-link" href="/djangoapp/">Home</a>
+            </li>
+            <li class="nav-item {% if navbar == 'about' %}active{% endif %}">
+                <a class="nav-link" href="/djangoapp/about">About</a>
+            </li>
+            <li class="nav-item {% if navbar == 'contact' %}active{% endif %}">
+                <a class="nav-link" href="/djangoapp/contact">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
