@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    {% include "./components/head.html" %}
 </head>
     <body class="d-flex flex-column h-100">
-        {% include "./navbar.html" %}
+        {% include "./components/navbar.html" %}
         <main class="flex-shrink-0">
             <div class="container p-5">
                 <div class="row align-items-center">
@@ -18,6 +18,6 @@
                 </div>
             </div>
         </main>
-        {% include "./footer.html" %}
+        {% include "./components/footer.html" %}
     </body>
 </html>

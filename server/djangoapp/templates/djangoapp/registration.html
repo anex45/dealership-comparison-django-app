@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% include "./components/head.html" %}
 </head>
     <body>
-        {% include "./navbar.html" %}
+        {% include "./components/navbar.html" %}
         <main class="flex-shrink-0">
             <div class="container p-5">
                 <div class="row">
-                    <div class="col-md-6 offset-md-3">
+                    <div class="col-lg-6 offset-lg-3">
                         <p class="h4 mb-5">Sign Up</p>
                         <form action="{% url 'djangoapp:registration' %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
+
                                 <label for="userName">User Name</label>
                                 <input type="text" class="form-control" id="userName" placeholder="Enter User Name" name="username">
                             </div>
@@ -41,6 +42,6 @@
                 </div>
             </div>
         </main>
-        {% include "./footer.html" %}
+        {% include "./components/footer.html" %}
     </body>
 </html>
