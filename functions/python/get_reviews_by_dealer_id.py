@@ -40,11 +40,10 @@ def main(param_dict):
     except ApiException as cloudant_exception:
         if str(cloudant_exception.code) == "404":
             return {"error": "dealerId does not exist"}
-        elif str(cloudant_exception.code) == "500":
+        if str(cloudant_exception.code) == "500":
             return {"error": "Something went wrong on the server"}
-        else:
-            return {"error": "status code: " + str(cloudant_exception.code)
-            + " error message: " + cloudant_exception.message}
+        return {"error": "status code: " + str(cloudant_exception.code)
+        + " error message: " + cloudant_exception.message}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
         print("connection error")
         return {"error": err}

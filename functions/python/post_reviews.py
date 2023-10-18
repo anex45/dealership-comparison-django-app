@@ -2,9 +2,9 @@
 Returns:
     Object: {'ok': True, 'id': '6', 'rev': '3-...'}
 """
+import json
 from ibm_cloud_sdk_core import ApiException
 from ibmcloudant.cloudant_v1 import CloudantV1, Document
-import json
 import requests
 
 
@@ -39,10 +39,9 @@ def main(review_json):
     except ApiException as cloudant_exception:
         if str(cloudant_exception.code) == "500":
             return {"error": "Something went wrong on the server"}
-        else:
-            return {"error": "status code: "
-            + str(cloudant_exception.code) + " error message: "
-            + cloudant_exception.message}
+        return {"error": "status code: "
+        + str(cloudant_exception.code) + " error message: "
+        + cloudant_exception.message}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
         print("connection error")
         return {"error": err}
