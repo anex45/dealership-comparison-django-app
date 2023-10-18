@@ -40,3 +40,5 @@ async function main(params) {
         }
     }
 }
+
+global.main = main;
