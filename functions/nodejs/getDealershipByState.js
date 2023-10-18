@@ -19,7 +19,7 @@ async function main(params) {
             fields: ['id', 'city', 'state', 'st', 'address', 'zip', 'lat', 'long']
         });
 
-        return dbAllDealerships.result.docs;
+        return { "dealerships": dbAllDealerships.result.docs };
     } catch (error) {
         if (error.code === 404) {
             return { error: 'The state does not exist' };
