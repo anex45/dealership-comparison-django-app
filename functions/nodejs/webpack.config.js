@@ -9,5 +9,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js'
   },
-  target: 'node'
+  externals: {
+    cloudant: '@ibm-cloud/cloudant',
+    cloudantSdk: 'ibm-cloud-sdk-core'
+  },
+  target: 'node',
+  mode: 'development'
 };

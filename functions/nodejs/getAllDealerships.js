@@ -39,7 +39,7 @@ async function main(params) {
             });
         });
 
-        return dealerships;
+        return { "dealerships": dealerships };
     } catch (error) {
         if (error.code === 404) {
             return { error: 'The database is empty' };
