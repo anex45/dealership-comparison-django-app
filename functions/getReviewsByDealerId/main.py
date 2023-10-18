@@ -43,7 +43,7 @@ def main(param_dict):
         elif str(cloudant_exception.code) == "500":
             return {"error": "Something went wrong on the server"}
         else:
-            return {"error": "status code: " + str(cloudant_exception.code) 
+            return {"error": "status code: " + str(cloudant_exception.code)
             + " error message: " + cloudant_exception.message}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
         print("connection error")
