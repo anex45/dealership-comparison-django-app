@@ -11,9 +11,17 @@
             <div class="container p-5">
                 <div class="row align-items-center">
                     <div class="col">
-                        <p class="h4">
+                        <p class="h4 mb-4">
                             Home
                         </p>
+                        {% if dealer_names %}
+                        <div class="mt-4">
+                            {dealer_names}
+                        </div>
+                        {% else %}
+                        <div>
+                            Nothing to show
+                        </div>
                     </div>
                 </div>
             </div>
