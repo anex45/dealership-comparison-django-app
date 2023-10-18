@@ -1,12 +1,11 @@
 """IBM Cloud Function that posts a review
 Returns:
-    List: List of reviews by Dealer ID
+    Object: {'ok': True, 'id': '6', 'rev': '3-...'}
 """
 from ibm_cloud_sdk_core import ApiException
 from ibmcloudant.cloudant_v1 import CloudantV1, Document
 import json
 import requests
-import sys
 
 
 def main(review_json):
@@ -18,53 +17,32 @@ def main(review_json):
     Returns:
         _type_: _description_ TODO
     """
+    json_load = json.loads(review_json)
     review = Document(
-        id=review_json[""],
-        name="Upkar Lidder",
-        dealership=15,
-        review="Great service!",
-        purchase="false",
-        another="field",
-        purchase_date="02/16/2021",
-        car_make="Audi",
-        car_model="Car",
-        car_year=2021
+        id=json_load["id"],
+        name=json_load["name"],
+        dealership=json_load["dealership"],
+        review=json_load["review"],
+        purchase=json_load["purchase"],
+        another=json_load["another"],
+        purchase_date=json_load["purchase_date"],
+        car_make=json_load["car_make"],
+        car_model=json_load["car_model"],
+        car_year=json_load["car_year"],
     )
-    # reviewLoad = json.loads(review_json)
-    # review = Document(
-    #     id=reviewLoad["id"],
-    #     name=reviewLoad["name"],
-    #     dealership=reviewLoad["dealership"],
-    #     review=reviewLoad["review"],
-    #     purchase=reviewLoad["purchase"],
-    #     another=reviewLoad["another"],
-    #     purchase_date=reviewLoad["purchase_date"],
-    #     car_make=reviewLoad["car_make"],
-    #     car_model=reviewLoad["car_model"],
-    #     car_year=reviewLoad["car_year"],
-    # )
     try:
-        fields = ['id', 'name', 'dealership', 'review', 'purchase', 'purchase_date', 'car_make', 'car_model', 'car_year']
         client = CloudantV1.new_instance()
-        response = client.post_find(
-            db='reviews',
-            selector={'dealership': {'$eq': param_dict["DEALER_ID"]}},
-            fields=fields
-        ).get_result()
+        response = client.post_document(db='reviews', document=review).get_result()
 
         print(response)
-        return {"dbs": response}
+        return {"review": response}
     except ApiException as cloudant_exception:
-        if str(cloudant_exception.code) == "404":
-            return {"error": "dealerId does not exist"}
-        elif str(cloudant_exception.code) == "500":
+        if str(cloudant_exception.code) == "500":
             return {"error": "Something went wrong on the server"}
         else:
-            return {"error": "status code: " + str(cloudant_exception.code) + " error message: " + cloudant_exception.message}
+            return {"error": "status code: "
+            + str(cloudant_exception.code) + " error message: "
+            + cloudant_exception.message}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
         print("connection error")
         return {"error": err}
-
-# python3 main.py main "{"id": 1114,"name": "Upkar Lidder","dealership": 15,"review": "Great service!","purchase": false,"another": "field","purchase_date": "02/16/2021","car_make": "Audi","car_model": "Car","car_year": 2021}"
-if __name__ == '__main__':
-    globals()[sys.argv[1]](sys.argv[2])
