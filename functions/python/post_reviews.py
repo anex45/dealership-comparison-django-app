@@ -4,11 +4,12 @@ Returns:
 """
 import json
 from ibm_cloud_sdk_core import ApiException
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibmcloudant.cloudant_v1 import CloudantV1, Document
 import requests
 
 
-def main(review_json):
+def main(params):
     """Main Function
 
     Args:
@@ -17,31 +18,33 @@ def main(review_json):
     Returns:
         _type_: _description_ TODO
     """
-    json_load = json.loads(review_json)
+    json_load = json.loads(params["PAYLOAD"])
+    print(json_load)
     review = Document(
         id=json_load["id"],
         name=json_load["name"],
         dealership=json_load["dealership"],
         review=json_load["review"],
         purchase=json_load["purchase"],
-        another=json_load["another"],
         purchase_date=json_load["purchase_date"],
         car_make=json_load["car_make"],
         car_model=json_load["car_model"],
         car_year=json_load["car_year"],
     )
     try:
-        client = CloudantV1.new_instance()
-        response = client.post_document(db='reviews', document=review).get_result()
+        authenticator = IAMAuthenticator(params["IAM_AUTH"])
+        service = CloudantV1(authenticator=authenticator)
+        service.set_service_url(params["CLOUDANT_URL"])
 
-        print(response)
-        return {"review": response}
+        response = service.post_document(
+            db='reviews', document=review).get_result()
+
+        return {"body": response}
     except ApiException as cloudant_exception:
         if str(cloudant_exception.code) == "500":
             return {"error": "Something went wrong on the server"}
         return {"error": "status code: "
-        + str(cloudant_exception.code) + " error message: "
-        + cloudant_exception.message}
+                + str(cloudant_exception.code) + " error message: "
+                + cloudant_exception.message}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
-        print("connection error")
         return {"error": err}

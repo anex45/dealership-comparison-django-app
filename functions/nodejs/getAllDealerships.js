@@ -17,29 +17,31 @@ async function main(params) {
         const dbAllDealerships = await cloudant.postAllDocs({ db: 'dealerships', includeDocs: true });
         dbAllDealerships.result.rows.map(({
             doc: {
-                id,
-                city,
-                state,
-                st,
                 address,
-                zip,
+                city,
+                full_name,
+                id,
                 lat,
-                long
+                long,
+                short_name,
+                st,
+                zip
             }
         }) => {
             dealerships.push({
-                id,
-                city,
-                state,
-                st,
                 address,
-                zip,
+                city,
+                full_name,
+                id,
                 lat,
-                long
+                long,
+                short_name,
+                st,
+                zip
             });
         });
 
-        return { "dealerships": dealerships };
+        return { "body": dealerships };
     } catch (error) {
         if (error.code === 404) {
             return { error: 'The database is empty' };
