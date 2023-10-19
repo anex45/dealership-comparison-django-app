@@ -31,6 +31,8 @@ def contact(request):
         return render(request, 'djangoapp/contact_us.html', context)
 
 # Create a `login_request` view to handle sign in request
+
+
 def login_request(request):
     context = {}
     if request.method == "POST":
@@ -47,11 +49,15 @@ def login_request(request):
         return render(request, 'djangoapp/index.html', context)
 
 # Create a `logout_request` view to handle sign out request
+
+
 def logout_request(request):
     logout(request)
     return redirect('djangoapp:index')
 
 # Create a `registration_request` view to handle sign up request
+
+
 def registration_request(request):
     context = {}
     if request.method == 'GET':
@@ -78,16 +84,18 @@ def registration_request(request):
             return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
+
+
 def get_dealerships(request):
     context = {'navbar': 'home'}
     if request.method == "GET":
-        url = "your-cloud-function-domain/dealerships/dealer-get"
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/77ec479f-bcfa-4ab2-8b39-03ba98a9125c/default/getAllDealerships"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
+        # dealer_names = ','.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        context['dealer_names'] = dealer_names
+        context['dealer_names'] = dealerships
         return render(request, 'djangoapp/index.html', context)
 
 
@@ -98,4 +106,3 @@ def get_dealerships(request):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
-

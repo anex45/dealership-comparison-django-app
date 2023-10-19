@@ -16,12 +16,17 @@
                         </p>
                         {% if dealer_names %}
                         <div class="mt-4">
-                            {dealer_names}
+                            <ul>
+                            {% for dealer in dealer_names %}
+                                <li>{{ dealer.short_name }}</li>
+                            {% endfor %}
+                            </ul>
                         </div>
                         {% else %}
                         <div>
                             Nothing to show
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
