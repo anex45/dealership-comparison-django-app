@@ -72,23 +72,37 @@ def get_dealers_from_cf(url, **kwargs):
 def get_dealer_by_id_from_cf(url, dealerId):
     '''
     get reviews by dealer id from a cloud function
-    - Call get_request() with specified arguments
+    - Call post_request() with specified arguments
     - Parse JSON results into a DealerView object list
     '''
     results = []
-    # Call get_request with a URL parameter
     json_result = post_request(url, {'DEALER_ID': dealerId})
-    print(json_result)
+
     if json_result:
         docs = json_result["docs"]
         for rev in docs:
             review_obj = DealerReview(dealership=rev["dealership"], name=rev["name"], purchase=rev["purchase"],
                                       review=rev["review"], purchase_date=rev["purchase_date"], car_make=rev["car_make"],
-                                      car_model=rev["car_model"], car_year=rev["car_year"], id=rev["id"])
+                                      car_model=rev["car_model"], car_year=rev["car_year"], sentiment="", id=rev["id"])
+
+            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
             results.append(review_obj)
     return results
 
-# Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
-# - Call get_request() with specified arguments
-# - Get the returned sentiment label such as Positive or Negative
+
+def analyze_review_sentiments(text):
+    '''
+    call Watson NLU and analyze text
+    Call post_request() with specified arguments
+    Get the returned sentiment label such as Positive or Negative
+    Value from Watson NLU - positive, neutral, negative
+    '''
+    url = "https://us-south.functions.appdomain.cloud/api/v1/web/77ec479f-bcfa-4ab2-8b39-03ba98a9125c/default/getWatsonSentiment"
+    json_result = post_request(url, {'text': text})
+    if json_result:
+        keywords = json_result["keywords"]
+        result = ""
+        for keyword in keywords:
+            sentiment = keyword["sentiment"]
+            result = sentiment["label"]
+        return result

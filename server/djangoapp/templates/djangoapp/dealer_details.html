@@ -20,15 +20,20 @@
                     {% if dealer_reviews %}
                     <div class="mt-4 d-flex">
                         {% for review in dealer_reviews %}
-                            <div class="card p-3">
+                            <div class="card">
                                 <blockquote class="blockquote mb-0 card-body">
                                     <p>{{ review.review }}</p>
                                     <footer class="blockquote-footer">
-                                    <small class="text-muted">
-                                        {{ review.name }}
-                                    </small>
+                                        <small class="text-muted">
+                                            {{ review.name }}
+                                        </small>
                                     </footer>
                                 </blockquote>
+                                <div class="card-footer">
+                                    <small class="text-muted">
+                                        opinion: {{ review.sentiment }}
+                                    </small>
+                                </div>
                             </div>
                             {% endfor %}
                     </div>
