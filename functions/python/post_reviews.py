@@ -19,7 +19,7 @@ def main(params):
         _type_: _description_ TODO
     """
     json_load = json.loads(params["PAYLOAD"])
-    print(json_load)
+
     review = Document(
         id=json_load["id"],
         name=json_load["name"],
