@@ -1,6 +1,6 @@
 import json
 import requests
-from .models import CarDealer
+from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 
 
@@ -12,8 +12,7 @@ def get_request(url, **kwargs):
         headers={'Content-Type': 'application/json'},
         auth=HTTPBasicAuth('apikey', api_key))
     '''
-    print(kwargs)
-    print(f"GET from {url} ")
+
     try:
         # Call get method of requests library with URL and parameters
         response = requests.get(url, headers={'Content-Type': 'application/json'},
@@ -21,14 +20,33 @@ def get_request(url, **kwargs):
     except:
         # If any error occurs
         print("Network exception occurred")
+
     status_code = response.status_code
     print("With status {} ".format(status_code))
 
     json_data = json.loads(response.text)
     return json_data
 
-# Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
+
+def post_request(url, payload, **kwargs):
+    '''
+    make HTTP POST requests
+    e.g., response = requests.post(url, params=kwargs, json=payload)
+    '''
+
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.post(url, params=kwargs, headers={
+                                 'Content-Type': 'application/json'}, json=payload)
+    except:
+        # If any error occurs
+        print("Network exception occurred")
+
+    status_code = response.status_code
+    print("With status {} ".format(status_code))
+
+    json_data = json.loads(response.text)
+    return json_data
 
 
 def get_dealers_from_cf(url, **kwargs):
@@ -38,10 +56,8 @@ def get_dealers_from_cf(url, **kwargs):
     '''
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(url)
-    if json_result:
-        # Get the row list in JSON as dealers
-        dealers = json_result
+    dealers = get_request(url)
+    if dealers:
         # For each dealer object
         for dealer in dealers:
             # Create a CarDealer object with values in dealer object
@@ -52,11 +68,25 @@ def get_dealers_from_cf(url, **kwargs):
             results.append(dealer_obj)
     return results
 
-# Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
-# - Call get_request() with specified arguments
-# - Parse JSON results into a DealerView object list
 
+def get_dealer_by_id_from_cf(url, dealerId):
+    '''
+    get reviews by dealer id from a cloud function
+    - Call get_request() with specified arguments
+    - Parse JSON results into a DealerView object list
+    '''
+    results = []
+    # Call get_request with a URL parameter
+    json_result = post_request(url, {'DEALER_ID': dealerId})
+    print(json_result)
+    if json_result:
+        docs = json_result["docs"]
+        for rev in docs:
+            review_obj = DealerReview(dealership=rev["dealership"], name=rev["name"], purchase=rev["purchase"],
+                                      review=rev["review"], purchase_date=rev["purchase_date"], car_make=rev["car_make"],
+                                      car_model=rev["car_model"], car_year=rev["car_year"], id=rev["id"])
+            results.append(review_obj)
+    return results
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):

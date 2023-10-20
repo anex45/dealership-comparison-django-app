@@ -9,10 +9,38 @@
 
     <body>
     {% include "./components/navbar.html" %}
-    <!--Add a nav bar here -->
-
     <!-- Add reviews as cards -->
-
+    <main class="flex-shrink-0">
+        <div class="container p-5">
+            <div class="row align-items-center">
+                <div class="col">
+                    <p class="h4 mb-4">
+                        Reviews
+                    </p>
+                    {% if dealer_reviews %}
+                    <div class="mt-4 d-flex">
+                        {% for review in dealer_reviews %}
+                            <div class="card p-3">
+                                <blockquote class="blockquote mb-0 card-body">
+                                    <p>{{ review.review }}</p>
+                                    <footer class="blockquote-footer">
+                                    <small class="text-muted">
+                                        {{ review.name }}
+                                    </small>
+                                    </footer>
+                                </blockquote>
+                            </div>
+                            {% endfor %}
+                    </div>
+                    {% else %}
+                    <div>
+                        Nothing to show
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
     {% include "./components/footer.html" %}
     </body>
 </html>

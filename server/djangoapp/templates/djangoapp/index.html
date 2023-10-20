@@ -5,22 +5,30 @@
     <title>Dealership Review</title>
     {% include "./components/head.html" %}
 </head>
-    <body class="d-flex flex-column h-100">
+    <body class="h-100">
         {% include "./components/navbar.html" %}
         <main class="flex-shrink-0">
             <div class="container p-5">
                 <div class="row align-items-center">
                     <div class="col">
                         <p class="h4 mb-4">
-                            Home
+                            Dealers
                         </p>
                         {% if dealer_names %}
-                        <div class="mt-4">
-                            <ul>
+                        <div class="mt-4 d-flex flex-wrap" style="gap: 10px;">
                             {% for dealer in dealer_names %}
-                                <li>{{ dealer.short_name }}</li>
+                                <div class="card" style="min-width: 340px;">
+                                    <div class="card-body">
+                                      <h5 class="card-title">{{ dealer.short_name }}</h5>
+                                      <p class="card-text">{{ dealer.full_name }}</p>
+                                      <p class="card-text">{{ dealer.address }}</p>
+                                      <p class="card-text">{{ dealer.city }}</p>
+                                    </div>
+                                    <div class="card-footer">
+                                      <a href="/djangoapp/dealer/{{ dealer.id }}">See the reviews</a>
+                                    </div>
+                                  </div>
                             {% endfor %}
-                            </ul>
                         </div>
                         {% else %}
                         <div>
