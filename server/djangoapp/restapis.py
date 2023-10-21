@@ -69,7 +69,7 @@ def get_dealers_from_cf(url, **kwargs):
     return results
 
 
-def get_dealer_by_id_from_cf(url, dealerId):
+def get_dealer_reviews_from_cf(url, dealerId):
     '''
     get reviews by dealer id from a cloud function
     - Call post_request() with specified arguments

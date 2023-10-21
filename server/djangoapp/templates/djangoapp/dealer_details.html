@@ -9,7 +9,6 @@
 
     <body>
     {% include "./components/navbar.html" %}
-    <!-- Add reviews as cards -->
     <main class="flex-shrink-0">
         <div class="container p-5" style="margin-bottom: 200px;">
             <div class="row align-items-center mb-4">
@@ -21,6 +20,10 @@
                     <div class="mt-4 mb-4 d-flex flex-wrap" style="gap: 10px;">
                         {% for review in dealer_reviews %}
                             <div class="card" style="width: 340px;">
+                                <div class="card-header">
+                                    <h5 class="card-title">{{ review.car_make }}, {{ review.car_model }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ review.car_year }}</h6>
+                                </div>
                                 <blockquote class="blockquote mb-0 card-body">
                                     <p>{{ review.review }}</p>
                                     <footer class="blockquote-footer">
@@ -33,6 +36,7 @@
                                     <small class="{% if review.sentiment == 'neutral' or '' %}text-muted{% else %}text-white{% endif %}">
                                         opinion: {{ review.sentiment }}
                                     </small>
+                                    <img class="card-img-right float-right img-thumbnail" src="{{ MEDIA_URL }}/emoji/{{ review.sentiment }}.png" style="height: 29px;" />
                                 </div>
                             </div>
                             {% endfor %}
@@ -43,14 +47,6 @@
                     </div>
                     {% endif %}
                 </div>
-            </div>
-            <div class="row align-items-center mt-4">
-                {% if user.is_authenticated %}
-                <div class="col">
-                    <p class="h4">Leave a Review</p>
-                    {% include "./components/post_form.html" %}
-                </div>
-                {% endif %}
             </div>
         </div>
     </main>

@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, post_user_reviews
+from django.shortcuts import render, redirect
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_user_reviews
 from django.contrib.auth import login, logout, authenticate, get_user
 import logging
-import json
 import uuid
 
 # Get an instance of a logger
@@ -28,8 +27,6 @@ def contact(request):
     if request.method == "GET":
         return render(request, 'djangoapp/contact_us.html', context)
 
-# Create a `login_request` view to handle sign in request
-
 
 def login_request(request):
     context = {}
@@ -46,14 +43,10 @@ def login_request(request):
     else:
         return render(request, 'djangoapp/index.html', context)
 
-# Create a `logout_request` view to handle sign out request
-
 
 def logout_request(request):
     logout(request)
     return redirect('djangoapp:index')
-
-# Create a `registration_request` view to handle sign up request
 
 
 def registration_request(request):
@@ -81,10 +74,11 @@ def registration_request(request):
             context['message'] = "User already exists."
             return render(request, 'djangoapp/registration.html', context)
 
-# Update the `get_dealerships` view to render the index page with a list of dealerships
-
 
 def get_dealerships(request):
+    '''
+    GET all dealerships with cloud function
+    '''
     context = {'navbar': 'home'}
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/77ec479f-bcfa-4ab2-8b39-03ba98a9125c/default/getAllDealerships"
@@ -99,33 +93,19 @@ def get_dealerships(request):
 
 def get_dealer_details(request, dealer_id):
     '''
-    render the reviews of a dealer
+    render the reviews of a dealer using a cloud functions
     '''
     context = {}
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/77ec479f-bcfa-4ab2-8b39-03ba98a9125c/default/getReviewsByDealerId"
         # Get dealers from the URL
-        reviews = get_dealer_by_id_from_cf(url, dealer_id)
-        # Concat all dealer's short name
-        # dealer_names = ','.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
+        reviews = get_dealer_reviews_from_cf(url, dealer_id)
         context['dealer_reviews'] = reviews
         return render(request, 'djangoapp/dealer_details.html', context)
 
 
 def add_review(request, dealer_id):
     '''submit a review
-    {
-      "doc_id": 42,
-      "name": "Sarita Dionisio",
-      "dealership": 44,
-      "review": "Pre-emptive modular extranet",
-      "purchase": true,
-      "purchase_date": "04/13/2020",
-      "car_make": "Plymouth",
-      "car_model": "Voyager",
-      "car_year": 1998
-    }
     '''
     context = {}
     user = request.user
