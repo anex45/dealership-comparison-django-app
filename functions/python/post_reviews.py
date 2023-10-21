@@ -21,10 +21,11 @@ def main(params):
     json_load = json.loads(params["PAYLOAD"])
 
     review = Document(
-        id=json_load["id"],
+        doc_id=json_load["doc_id"],
         name=json_load["name"],
         dealership=json_load["dealership"],
         review=json_load["review"],
+        sentiment=json_load["sentiment"],
         purchase=json_load["purchase"],
         purchase_date=json_load["purchase_date"],
         car_make=json_load["car_make"],

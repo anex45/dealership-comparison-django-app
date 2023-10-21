@@ -20,10 +20,11 @@ def main(param):
 
     try:
         fields = [
-            'id',
+            'doc_id',
             'name',
             'dealership',
             'review',
+            'sentiment',
             'purchase',
             'purchase_date',
             'car_make',
