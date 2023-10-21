@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dealership Review</title>
-    {% include "./components/head.html" %}
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Dealership Review</title>
+        {% include "./components/head.html" %}
+        <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+        <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+        {% include "./components/table.js" %}
+    </head>
     <body class="h-100">
         {% include "./components/navbar.html" %}
         <main class="flex-shrink-0">
