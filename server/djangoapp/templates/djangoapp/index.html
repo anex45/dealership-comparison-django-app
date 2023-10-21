@@ -14,21 +14,9 @@
                         <p class="h4 mb-4">
                             Dealers
                         </p>
-                        {% if dealer_names %}
-                        <div class="mt-4 d-flex flex-wrap" style="gap: 10px;">
-                            {% for dealer in dealer_names %}
-                                <div class="card" style="width: 340px;">
-                                    <div class="card-body">
-                                      <h5 class="card-title">{{ dealer.short_name }}</h5>
-                                      <p class="card-text">{{ dealer.full_name }}</p>
-                                      <p class="card-text">{{ dealer.address }}</p>
-                                      <p class="card-text">{{ dealer.city }}</p>
-                                    </div>
-                                    <div class="card-footer">
-                                      <a href="/djangoapp/dealer/{{ dealer.id }}">See the reviews</a>
-                                    </div>
-                                  </div>
-                            {% endfor %}
+                        {% if dealers %}
+                        <div class="mt-4">
+                            {% include "./components/table.html" %}
                         </div>
                         {% else %}
                         <div>

@@ -1,0 +1,30 @@
+<!-- ID
+Dealer Name
+City
+Address
+Zip
+State -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Dealer Name</th>
+      <th scope="col">City</th>
+      <th scope="col">Address</th>
+      <th scope="col">Zip</th>
+      <th scope="col">State</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for dealer in dealers %}
+      <tr>
+        <th scope="row">{{ dealer.id }}</th>
+        <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
+        <td>{{ dealer.city }}</td>
+        <td>{{ dealer.address }}</td>
+        <td>{{ dealer.zip }}</td>
+        <td>{{ dealer.st }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
