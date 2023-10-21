@@ -81,11 +81,10 @@ def get_dealer_by_id_from_cf(url, dealerId):
     if json_result:
         docs = json_result["docs"]
         for rev in docs:
+
             review_obj = DealerReview(dealership=rev["dealership"], name=rev["name"], purchase=rev["purchase"],
                                       review=rev["review"], purchase_date=rev["purchase_date"], car_make=rev["car_make"],
-                                      car_model=rev["car_model"], car_year=rev["car_year"], sentiment="", id=rev["id"])
-
-            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
+                                      car_model=rev["car_model"], car_year=rev["car_year"], sentiment=rev["sentiment"], doc_id=rev["doc_id"])
             results.append(review_obj)
     return results
 
@@ -99,6 +98,7 @@ def analyze_review_sentiments(text):
     '''
     url = "https://us-south.functions.appdomain.cloud/api/v1/web/77ec479f-bcfa-4ab2-8b39-03ba98a9125c/default/getWatsonSentiment"
     json_result = post_request(url, {'text': text})
+
     if json_result:
         keywords = json_result["keywords"]
         result = ""
@@ -106,3 +106,15 @@ def analyze_review_sentiments(text):
             sentiment = keyword["sentiment"]
             result = sentiment["label"]
         return result
+
+
+def post_user_reviews(payload):
+    '''POST review
+    '''
+    print(payload)
+    payload["sentiment"] = analyze_review_sentiments(payload["review"])
+    payload_json = json.dumps(payload)
+    url = "https://us-south.functions.appdomain.cloud/api/v1/web/77ec479f-bcfa-4ab2-8b39-03ba98a9125c/default/postReviews"
+    json_result = post_request(url, {'PAYLOAD': payload_json},)
+    if json_result:
+        return json_result

@@ -2,13 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
-from datetime import datetime
+from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, post_user_reviews
+from django.contrib.auth import login, logout, authenticate, get_user
 import logging
 import json
+import uuid
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -114,6 +112,38 @@ def get_dealer_details(request, dealer_id):
         context['dealer_reviews'] = reviews
         return render(request, 'djangoapp/dealer_details.html', context)
 
-# Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+
+def add_review(request, dealer_id):
+    '''submit a review
+    {
+      "doc_id": 42,
+      "name": "Sarita Dionisio",
+      "dealership": 44,
+      "review": "Pre-emptive modular extranet",
+      "purchase": true,
+      "purchase_date": "04/13/2020",
+      "car_make": "Plymouth",
+      "car_model": "Voyager",
+      "car_year": 1998
+    }
+    '''
+    context = {}
+    user = request.user
+
+    if user.is_authenticated:
+        review = {}
+
+        id = str(uuid.uuid4())
+        review["doc_id"] = id
+        review["name"] = get_user(request).username
+        review["dealership"] = dealer_id
+        review["review"] = request.POST['review']
+        review["purchase"] = request.POST['purchase']
+        review["purchase_date"] = request.POST['purchase_date']
+        review["car_make"] = request.POST['car_make']
+        review["car_model"] = request.POST['car_model']
+        review["car_year"] = request.POST['car_year']
+
+        post_review_result = post_user_reviews(review)
+        if post_review_result:
+            return redirect('djangoapp:dealer_details', dealer_id)

@@ -11,16 +11,16 @@
     {% include "./components/navbar.html" %}
     <!-- Add reviews as cards -->
     <main class="flex-shrink-0">
-        <div class="container p-5">
-            <div class="row align-items-center">
+        <div class="container p-5" style="margin-bottom: 200px;">
+            <div class="row align-items-center mb-4">
                 <div class="col">
                     <p class="h4 mb-4">
                         Reviews
                     </p>
                     {% if dealer_reviews %}
-                    <div class="mt-4 d-flex">
+                    <div class="mt-4 mb-4 d-flex flex-wrap" style="gap: 10px;">
                         {% for review in dealer_reviews %}
-                            <div class="card">
+                            <div class="card" style="width: 340px;">
                                 <blockquote class="blockquote mb-0 card-body">
                                     <p>{{ review.review }}</p>
                                     <footer class="blockquote-footer">
@@ -29,8 +29,8 @@
                                         </small>
                                     </footer>
                                 </blockquote>
-                                <div class="card-footer">
-                                    <small class="text-muted">
+                                <div class="card-footer {% if review.sentiment == 'positive' %}bg-success bg-gradient-light{% elif review.sentiment == 'negative' %}bg-danger bg-gradient-light{% endif %}">
+                                    <small class="{% if review.sentiment == 'neutral' or '' %}text-muted{% else %}text-white{% endif %}">
                                         opinion: {{ review.sentiment }}
                                     </small>
                                 </div>
@@ -43,6 +43,14 @@
                     </div>
                     {% endif %}
                 </div>
+            </div>
+            <div class="row align-items-center mt-4">
+                {% if user.is_authenticated %}
+                <div class="col">
+                    <p class="h4">Leave a Review</p>
+                    {% include "./components/post_form.html" %}
+                </div>
+                {% endif %}
             </div>
         </div>
     </main>

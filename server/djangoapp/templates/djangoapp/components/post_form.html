@@ -1,0 +1,39 @@
+<form action="{% url 'djangoapp:add_review' dealer_id=15 %}" method="post">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group">
+          <label for="car_make">Car Make</label>
+          <input type="text" class="form-control" id="car_make" placeholder="car make" name="car_make" required>
+      </div>
+      <div class="form-group">
+        <label for="car_model">Car Model</label>
+        <input type="text" class="form-control" id="car_model" placeholder="car model" name="car_model" required>
+      </div>
+      <div class="form-group">
+        <label for="car_year">Car Year</label>
+        <input type="text" class="form-control" id="car_year" placeholder="car year" name="car_year" required>
+      </div>
+      <div class="form-group">
+        <label for="purchase">Did you purchase the car?</label>
+        <input type="checkbox" id="purchase" aria-label="Did you purchase the car?" name="purchase" required>
+      </div>
+      <div class="form-group">
+        <label for="purchase_date">What's the date of the purchase?</label>
+        <input type="date" id="purchase_date" aria-label="What's the date of the purchase?" name="purchase_date" required>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label for="review">Your review</label>
+        <textarea class="form-control" id="review" aria-label="Your review" name="review" minlength="15" rows="12" required></textarea>
+      </div>
+    </div>
+  </div>
+  {% if message %}
+  <div class="alert alert-warning">
+      {{ message }}
+  </div>
+  {% endif %}
+  <button type="submit" class="btn btn-lg btn-primary float-right">Post Review</button>
+</form>
