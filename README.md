@@ -1,10 +1,10 @@
-# Final Project Template
+# Dealership comparison
+Web app written in Python Django and Node.js Serverless. Deployed on IBM Cloud.
 
-The final project for this course has several steps that you must complete. 
-To give you an overview of the whole project, all the high-level steps are listed below. 
-The project is then divided into several smaller labs that give the detailed instructions for each step. 
-You must complete all the labs to successfully complete the project.
-
+Additional services used:
+- Watson NLU
+- Cloudant NosQL DB
+- Github CI/CD
 ## Project Breakdown
 
 **Prework: Sign up for IBM Cloud account and create a Watson Natural language Understanding service**
