@@ -5,6 +5,7 @@ Additional services used:
 - Watson NLU
 - Cloudant NosQL DB
 - Github CI/CD
+
 ## Project Breakdown
 
 **Prework: Sign up for IBM Cloud account and create a Watson Natural language Understanding service**
@@ -34,3 +35,11 @@ Additional services used:
 **Containerize your application**
 1. Add deployment artifacts to your application
 2. Deploy your application
+
+## Screenshots
+
+------------------
+
+![Home Page](./screenshots/home_page.png "Home Page")
+
+![Reviews Page](./screenshots/reviews_page.png "Reviews Page")
