@@ -21,6 +21,6 @@
     "webpack-cli": "^5.1.4"
   },
   "pre-commit": [
-    "npm run lint"
+    "lint"
   ]
 }
