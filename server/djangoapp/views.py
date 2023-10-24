@@ -1,11 +1,10 @@
-from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+import uuid
+import logging
+from .models import CarModel
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_user_reviews
 from django.contrib.auth import login, logout, authenticate, get_user
-import logging
-import uuid
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -101,29 +100,41 @@ def get_dealer_details(request, dealer_id):
         # Get dealers from the URL
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
         context['dealer_reviews'] = reviews
+        context['dealer_id'] = dealer_id
         return render(request, 'djangoapp/dealer_details.html', context)
 
 
 def add_review(request, dealer_id):
-    '''submit a review
+    '''view a review page
     '''
-    context = {}
-    user = request.user
+    context = {'dealer_id': dealer_id}
+    cars = CarModel.objects.filter(dealer_id=dealer_id)
+    context["cars"] = cars
+    if request.method == "GET":
+        return render(request, 'djangoapp/add_review.html', context)
+    else:
+        user = request.user
 
-    if user.is_authenticated:
-        review = {}
+        if user.is_authenticated:
+            review = {}
+            car = CarModel.objects.filter(id=request.POST["car"])
+            print(car)
+            for c in car:
+                make = c.car_make.car_make_name
+                model = c.car_model_name
+                year = c.car_model_year.strftime("%Y")
+                id = str(uuid.uuid4())
 
-        id = str(uuid.uuid4())
-        review["doc_id"] = id
-        review["name"] = get_user(request).username
-        review["dealership"] = dealer_id
-        review["review"] = request.POST['review']
-        review["purchase"] = request.POST['purchase']
-        review["purchase_date"] = request.POST['purchase_date']
-        review["car_make"] = request.POST['car_make']
-        review["car_model"] = request.POST['car_model']
-        review["car_year"] = request.POST['car_year']
+                review["doc_id"] = id
+                review["name"] = get_user(request).username
+                review["dealership"] = dealer_id
+                review["review"] = request.POST['review']
+                review["purchase"] = request.POST['purchase']
+                review["purchase_date"] = request.POST['purchase_date']
+                review["car_make"] = make
+                review["car_model"] = model
+                review["car_year"] = year
 
-        post_review_result = post_user_reviews(review)
-        if post_review_result:
-            return redirect('djangoapp:dealer_details', dealer_id)
+                post_review_result = post_user_reviews(review)
+                if post_review_result:
+                    return redirect('djangoapp:dealer_details', dealer_id)
