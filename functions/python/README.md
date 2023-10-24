@@ -5,7 +5,10 @@ To work with these functions, you have to follow the steps below.
 
 1. Login to IBM Cloud in your terminal
 ```
-ibmcloud login
+ibmcloud login -a https://cloud.ibm.com -u passcode -p <passcode>
+```
+Choose `us-south` from the list
+```
 ibmcloud target -g Default
 ibmcloud fn property set --namespace 77ec479f-bcfa-4ab2-8b39-03ba98a9125c
 ```
