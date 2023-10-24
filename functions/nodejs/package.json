@@ -16,7 +16,13 @@
   },
   "devDependencies": {
     "eslint": "^8.27.0",
+    "pre-commit": "^1.2.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
+  },
+  "hooks": {
+    "pre-commit": [
+      "npm run lint"
+    ]
   }
 }
