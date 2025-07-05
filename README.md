@@ -4,7 +4,7 @@ Compare US car dealerships from across the country. View and add car dealership 
 
 ## Tech specs
 Web app written in Python Django and Node.js Serverless. Deployed on IBM Cloud.
-
+#
 Additional services used:
 - Watson NLU
 - Cloudant NosQL DB
