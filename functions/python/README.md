@@ -4,7 +4,7 @@ Capstone project - Dealership website
 To work with these functions, you have to follow the steps below.
 
 1. Login to IBM Cloud in your terminal
-```
+```#
 ibmcloud login -a https://cloud.ibm.com -u passcode -p <passcode>
 ```
 Choose `us-south` from the list
